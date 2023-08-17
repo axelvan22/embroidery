@@ -148,16 +148,16 @@ def colorize(png, rect, color, transparent = False):
         return file_name
 
 
-colorized = transform_rgb('patterns/20230710_002239.jpg',85)
+colorized = transform_rgb('../images/patterns_jpg/heart_pirates.jpg',85)
 
 
-colorized = colorize(colorized, (0, 0, 717, 911), (0, 0, 0))
+colorized = colorize(colorized, (0, 0, 1425, 1453), (168, 50, 50))
 #colorized = colorize(colorized, (300, 564, 85, 385), (204, 0, 102))
 
 
-image_resize(colorized, 0.5)
+#image_resize(colorized, 0.5)
 
-overlay(colorized, 'backgrounds/20230710_010428.jpg', (1775,1050), True)
+#overlay(colorized, 'backgrounds/20230710_010428.jpg', (1775,1050), True)
 
 #colorized = colorize(colorized, (400, 500, 350, 400), (153, 153, 255), True)
 
