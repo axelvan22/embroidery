@@ -4,9 +4,9 @@ import FilerobotImageEditor, {
   TABS,
   TOOLS,
 } from 'react-filerobot-image-editor';
-//import Test from './images/test.jpg';
+import './Visualizer.css';
 
-function App() {
+function Visualizer() {
   const [isImgEditorShown, setIsImgEditorShown] = useState(false);
 
   // for the background image
@@ -58,4 +58,4 @@ function App() {
   );
 }
 
-export default App;
+export default Visualizer;
