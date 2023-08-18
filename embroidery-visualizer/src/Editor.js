@@ -9,6 +9,27 @@ function Editor(props) {
     const [imageSrc, setImageSrc] = useState("");
     const [imageSelected, setImageSelected] = useState(false);
 
+    /*const resizeImage = () => {
+      var MAX_WIDTH = 500;
+      var MAX_HEIGHT = 500;
+      var width = src_image.width;
+      var height = src_image.height;
+
+      if (width > height) {
+        if (width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        }
+      } else {
+        if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+      }
+      canvasRef.current.width = width;
+      canvasRef.current.height = height;
+    }*/
+
     const handleInputChange = (event) => {
       const reader = new FileReader();
       reader.onloadend = (event) => {
@@ -18,7 +39,12 @@ function Editor(props) {
           if (canvasRef.current && canvasCtxRef.current) {
             canvasRef.current.height = "500";
             canvasRef.current.width = "500";
-            canvasCtxRef.current.drawImage(src_image, 0, 0);
+
+            var hRatio = canvasRef.current.width / src_image.width    ;
+            var vRatio = canvasRef.current.height / src_image.height  ;
+            var ratio  = Math.min ( hRatio, vRatio );
+
+            canvasCtxRef.current.drawImage(src_image, 0, 0, src_image.width, src_image.height, 0,0,src_image.width*ratio, src_image.height*ratio);
             var imageData = canvasRef.current.toDataURL("image/jpg");
             setImageSrc(imageData);
           }
