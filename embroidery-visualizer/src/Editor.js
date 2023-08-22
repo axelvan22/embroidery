@@ -7,36 +7,18 @@ function Editor(props) {
     const canvasRef = useRef(null);
     const canvasCtxRef = useRef(null);
     const [imageSrc, setImageSrc] = useState("");
-    const [imageSelected, setImageSelected] = useState(false);
-
-    /*const resizeImage = () => {
-      var MAX_WIDTH = 500;
-      var MAX_HEIGHT = 500;
-      var width = src_image.width;
-      var height = src_image.height;
-
-      if (width > height) {
-        if (width > MAX_WIDTH) {
-          height *= MAX_WIDTH / width;
-          width = MAX_WIDTH;
-        }
-      } else {
-        if (height > MAX_HEIGHT) {
-          width *= MAX_HEIGHT / height;
-          height = MAX_HEIGHT;
-        }
-      }
-      canvasRef.current.width = width;
-      canvasRef.current.height = height;
-    }*/
+    //const [imageSelected, setImageSelected] = useState(false);
 
     const handleInputChange = (event) => {
+      //setImageSelected(true);
       const reader = new FileReader();
       reader.onloadend = (event) => {
         const src_image = new Image();
   
         src_image.onload = () => {
           if (canvasRef.current && canvasCtxRef.current) {
+
+            // resize image to canvas
             canvasRef.current.height = "500";
             canvasRef.current.width = "500";
 
@@ -52,14 +34,13 @@ function Editor(props) {
         src_image.src = event.target.result;
       };
       reader.readAsDataURL(event.target.files[0]);
-      setImageSelected(true);
     };
 
     useEffect(() => {
         if (canvasRef.current) {
           canvasCtxRef.current = canvasRef.current.getContext("2d");
         }
-        const hoveredColor = document.getElementById('hovered-color');
+        /*const hoveredColor = document.getElementById('hovered-color');
         const selectedColor = document.getElementById('selected-color');
 
 
@@ -78,7 +59,7 @@ function Editor(props) {
         }
 
         canvasRef.current.addEventListener('mousemove', event => pick(event, hoveredColor));
-        canvasRef.current.addEventListener('click', event => pick(event, selectedColor));
+        canvasRef.current.addEventListener('click', event => pick(event, selectedColor));*/
     }, []);
 
     return (
@@ -96,7 +77,7 @@ function Editor(props) {
           <tbody>
             <tr>
               <td>
-                <img id="output" src={imageSrc} />
+                <img id="output" src={imageSrc} alt="Please choose a file"/>
                 <canvas
                     id="canvas"
                     ref={canvasRef}
