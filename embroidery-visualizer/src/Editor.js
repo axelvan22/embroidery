@@ -78,7 +78,7 @@ function Editor(props) {
     return (
       <>
       <h1>Pattern Editor </h1>
-        <input type="file" id="input" onChange={handleInputChange} />
+        <input type="file" id="uploadFile" accept="image/png, image/jpeg" onChange={handleInputChange} />
           <table>
           <thead>
             <tr>
