@@ -6,7 +6,7 @@ function Editor(props) {
 
     const canvasRef = useRef(null);
     const canvasCtxRef = useRef(null);
-    const [imageSrc, setImageSrc] = useState("");
+    const [imageSrc, setImageSrc] = useState(null);
     //const [imageSelected, setImageSelected] = useState(false);
 
     const handleInputChange = (event) => {
@@ -29,6 +29,7 @@ function Editor(props) {
             canvasCtxRef.current.drawImage(src_image, 0, 0, src_image.width, src_image.height, 0,0,src_image.width*ratio, src_image.height*ratio);
             var imageData = canvasRef.current.toDataURL("image/jpg");
             setImageSrc(imageData);
+            console.log(imageData);
           }
         };
         src_image.src = event.target.result;
@@ -56,11 +57,23 @@ function Editor(props) {
         destination.textContent = rgba;
 
         return rgba;
-        }
+        }*/
 
-        canvasRef.current.addEventListener('mousemove', event => pick(event, hoveredColor));
-        canvasRef.current.addEventListener('click', event => pick(event, selectedColor));*/
-    }, []);
+        const moveHandler = () =>{
+          console.log("Mouse moved on canvas");
+        };
+
+        const clickHandler = () =>{
+          console.log("Mouse clicked canvas");
+        };
+
+        canvasRef.current.addEventListener('mousemove', moveHandler);
+        canvasRef.current.addEventListener('click', clickHandler);
+        return () => {
+          canvasRef.current.removeEventListener('click', clickHandler);
+          canvasRef.current.removeEventListener('mousemove', moveHandler);
+        }
+    });
 
     return (
       <>
@@ -84,8 +97,8 @@ function Editor(props) {
                     style={{ display: "none" }}
                   ></canvas>
               </td>
-              <td class="color-cell" id="hovered-color"></td>
-              <td class="color-cell" id="selected-color"></td>
+              <td className="color-cell" id="hovered-color"></td>
+              <td className="color-cell" id="selected-color"></td>
             </tr>
           </tbody>
         </table>
@@ -93,14 +106,4 @@ function Editor(props) {
     );
 }
 
-/*
-<div>
-          <img id="output" src={imageSrc} />
-          <canvas
-              id="canvas"
-              ref={canvasRef}
-              style={{ display: "none" }}
-            ></canvas>
-        </div>
-        */
 export default Editor;
