@@ -1,4 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
+//import "colors.jpg";
 
 const DrawRectangle = () => {
     const canvasRef = useRef(null);
@@ -7,6 +8,7 @@ const DrawRectangle = () => {
 
     const [isDrawing, setIsDrawing] = useState(false);
     const [rect, setRect] = useState(null);
+    const [image, setImage] = useState(null);
 
     const canvasOffSetX = useRef(null);
     const canvasOffSetY = useRef(null);
@@ -19,8 +21,14 @@ const DrawRectangle = () => {
         canvas.height = 500;
 
         const context = canvas.getContext("2d");
+        const imageTest = new Image();
+        imageTest.src = "https://upload.wikimedia.org/wikipedia/commons/c/c5/Colorwheel.svg";
+        imageTest.onload = function() {
+            context.drawImage(imageTest,0,0);
+            setImage(imageTest);
+        }
         context.lineCap = "round";
-        //context.strokeStyle = "grey";
+        context.strokeStyle = "black";
         context.setLineDash([4, 2]);
         context.lineWidth = 1;
         contextRef.current = context;
@@ -55,6 +63,9 @@ const DrawRectangle = () => {
         const rectHeight = newMouseY - startY.current;
 
         contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+        //redraw image
+        contextRef.current.drawImage(image,0,0);
 
         contextRef.current.strokeRect(startX.current, startY.current, rectWidht, rectHeight);
         setRect([startX.current, startY.current, rectWidht, rectHeight]);
