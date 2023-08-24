@@ -4,7 +4,6 @@ import {useEffect, useRef, useState} from 'react';
 const DrawRectangle = () => {
     const canvasRef = useRef(null);
     const contextRef = useRef(null);
-    const rectRef = useRef(null);
 
     const [isDrawing, setIsDrawing] = useState(false);
     const [rect, setRect] = useState(null);
@@ -23,6 +22,7 @@ const DrawRectangle = () => {
         const context = canvas.getContext("2d");
         const imageTest = new Image();
         imageTest.src = "https://upload.wikimedia.org/wikipedia/commons/c/c5/Colorwheel.svg";
+        imageTest.crossOrigin = "Anonymous";
         imageTest.onload = function() {
             context.drawImage(imageTest,0,0);
             setImage(imageTest);
@@ -37,6 +37,26 @@ const DrawRectangle = () => {
         canvasOffSetX.current = canvasOffSet.top;
         canvasOffSetY.current = canvasOffSet.left;
     }, []);
+
+    const colorizeSelectedRectangle = (color) => {
+        if (!isDrawing){
+            const rectangleData = contextRef.current.getImageData(rect[0], rect[1], rect[2], rect[3]);
+
+            var pix = rectangleData.data;
+
+            // Loop over each pixel and invert the color.
+            for (var i = 0, n = pix.length; i < n; i += 4) {
+                pix[i  ] = color[0]; // red
+                pix[i+1] = color[1]; // green
+                pix[i+2] = color[2]; // blue
+                // i+3 is alpha (the fourth element)
+            }
+
+            // Draw the ImageData at the given (x,y) coordinates.
+            contextRef.current.putImageData(rectangleData, rect[0], rect[1]);
+            //setImage(contextRef.current.getImageData(0,0,canvasRef.current.width, canvasRef.current.height));
+        }
+    };
 
     const startDrawingRectangle = ({nativeEvent}) => {
         nativeEvent.preventDefault();
@@ -73,9 +93,8 @@ const DrawRectangle = () => {
 
     const stopDrawingRectangle = () => {
         setIsDrawing(false);
-        console.log(rect);
     };
-
+// <button onClick={colorizeSelectedRectangle([155,155,155])}>colorize in grey</button>
     return (
         <div>
             <canvas className="canvas-container-rect"
@@ -85,6 +104,8 @@ const DrawRectangle = () => {
                 onMouseUp={stopDrawingRectangle}
                 onMouseLeave={stopDrawingRectangle}>
             </canvas>
+            {rect != null &&
+            (<button onClick={() => colorizeSelectedRectangle([155,155,155])}>colorize in grey</button>)}
         </div>
     )
 }
