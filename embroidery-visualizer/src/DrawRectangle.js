@@ -46,6 +46,9 @@ const DrawRectangle = () => {
         context.lineWidth = 1;
         contextRef.current = context;
 
+        // draw the rectangle around the canvas
+        contextRef.current.strokeRect(0, 0, canvas.width, canvas.height);
+
         // init canvasOffSet X and Y
         const canvasOffSet = canvas.getBoundingClientRect();
         canvasOffSetX.current = canvasOffSet.top;
@@ -58,6 +61,9 @@ const DrawRectangle = () => {
             // clear rect and redraw image
             contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
             contextRef.current.drawImage(image,0,0);
+            
+            // draw the rectangle around the canvas
+            contextRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
             // get the image data in the rectangle
             const rectangleData = contextRef.current.getImageData(rect[0], rect[1], rect[2], rect[3]);
@@ -121,6 +127,9 @@ const DrawRectangle = () => {
 
         // redraw image
         contextRef.current.drawImage(image,0,0);
+
+        // draw the rectangle around the canvas
+        contextRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
         // create the new rectangle
         contextRef.current.strokeRect(startX.current, startY.current, rectWidht, rectHeight);
