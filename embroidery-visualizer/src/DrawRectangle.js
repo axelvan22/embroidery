@@ -6,6 +6,7 @@ const DrawRectangle = () => {
     const rectRef = useRef(null);
 
     const [isDrawing, setIsDrawing] = useState(false);
+    const [rect, setRect] = useState(null);
 
     const canvasOffSetX = useRef(null);
     const canvasOffSetY = useRef(null);
@@ -19,7 +20,8 @@ const DrawRectangle = () => {
 
         const context = canvas.getContext("2d");
         context.lineCap = "round";
-        context.strokeStyle = "grey";
+        //context.strokeStyle = "grey";
+        context.setLineDash([4, 2]);
         context.lineWidth = 1;
         contextRef.current = context;
 
@@ -55,10 +57,12 @@ const DrawRectangle = () => {
         contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
         contextRef.current.strokeRect(startX.current, startY.current, rectWidht, rectHeight);
+        setRect([startX.current, startY.current, rectWidht, rectHeight]);
     };
 
     const stopDrawingRectangle = () => {
         setIsDrawing(false);
+        console.log(rect);
     };
 
     return (
