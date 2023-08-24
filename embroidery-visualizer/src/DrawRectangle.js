@@ -1,4 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
+import './DrawRectangle.css';
 
 const DrawRectangle = () => {
     const canvasRef = useRef(null);
