@@ -198,6 +198,9 @@ const DrawRectangle = () => {
             }
             {prevImage != null &&
             (<button onClick={() => retrievePreviousImageState()}>Undo</button>)}
+            <div style={{ background: hex, marginTop: 30, padding: 10 }}>
+              This is the color picked.
+            </div>
             <Sketch
                 style={{ marginLeft: 20 }}
                 color={hex}
