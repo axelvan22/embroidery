@@ -25,7 +25,7 @@ function Editor(props) {
           const image = new Image();
           image.src = imageSrc;
           image.onload = () => {
-            canvasCtxRef.current.drawImage(image, 0, 0,);
+            canvasCtxRef.current.drawImage(image, 0, 0);
           }
         }
       };
