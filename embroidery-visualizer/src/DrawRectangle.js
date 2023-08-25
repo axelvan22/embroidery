@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import './DrawRectangle.css';
+import {Sketch} from '@uiw/react-color';
 
 const DrawRectangle = () => {
     const canvasRef = useRef(null);
@@ -7,6 +8,12 @@ const DrawRectangle = () => {
     
     // isDrawing is true when the rectangle is being drawn
     const [isDrawing, setIsDrawing] = useState(false);
+
+    // hex is the hex color picked on the color picker
+    const [hex, setHex] = useState("#fff");
+
+    // rgb is the rgb color picked on the color picker and used to color the rectangle
+    const [rgb, setRgb] = useState([255, 255, 255]);
 
     // rect contains the coord of the rectangle drawn
     const [rect, setRect] = useState(null);
@@ -60,6 +67,8 @@ const DrawRectangle = () => {
 
     const colorizeSelectedRectangle = (color) => {
         if (!isDrawing){
+
+            console.log(color);
 
             // update the previous stage of the image
             setPrevImage(image); 
@@ -165,6 +174,15 @@ const DrawRectangle = () => {
         contextRef.current.drawImage(image,0,0);*/
     };
 
+    const hexToRGB = (hex) => {
+        hex = "0x" + hex.substring(1,7);
+        let r = (hex >> 16) & 0xFF;
+        let g = (hex >> 8) & 0xFF;
+        let b = hex & 0xFF;
+        //console.log([[r, g, b]]);
+        return [r, g, b];
+    };
+
     return (
         <div>
             <canvas className="canvas-container-rect"
@@ -175,11 +193,21 @@ const DrawRectangle = () => {
                 onMouseLeave={stopDrawingRectangle}>
             </canvas>
             {rect != null && (
-                <button onClick={() => colorizeSelectedRectangle([155,155,155])}>colorize in grey</button>
+                <button onClick={() => colorizeSelectedRectangle(rgb)}>colorize rectangle</button>
                 )
             }
             {prevImage != null &&
             (<button onClick={() => retrievePreviousImageState()}>Undo</button>)}
+            <Sketch
+                style={{ marginLeft: 20 }}
+                color={hex}
+                disableAlpha="true"
+                onChange={(color) => {
+                    setHex(color.hex);
+                    setRgb(hexToRGB(color.hex));
+                    //console.log(color.hex);
+                }}
+            />
         </div>
     )
 }
