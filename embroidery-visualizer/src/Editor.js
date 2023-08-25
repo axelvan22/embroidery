@@ -22,6 +22,7 @@ function Editor(props) {
             var vRatio = canvasRef.current.height / src_image.height  ;
             var ratio  = Math.min ( hRatio, vRatio );
 
+            canvasCtxRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
             canvasCtxRef.current.drawImage(src_image, 0, 0, src_image.width, src_image.height, 0,0,src_image.width*ratio, src_image.height*ratio);
             var imageData = canvasRef.current.toDataURL("image/jpg");
             setImageSrc(imageData);
@@ -40,7 +41,7 @@ function Editor(props) {
           canvasRef.current.width = "500";
 
           canvasCtxRef.current = canvasRef.current.getContext("2d");
-
+          canvasCtxRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
           if(imageSrc !== null){
             const image = new Image();
             image.src = imageSrc;
@@ -82,7 +83,7 @@ function Editor(props) {
           canvasRef.current.removeEventListener('click', clickHandler);
           canvasRef.current.removeEventListener('mousemove', moveHandler);
         }*/
-    }, []);
+    }, [imageSrc]);
 
     return (
       <>
@@ -91,7 +92,6 @@ function Editor(props) {
           <canvas
               className="canvas-container-image"
               ref={canvasRef}
-              onMouseDown={() => console.log("mouse moved on canvas")}
             ></canvas>
       </>
     );
