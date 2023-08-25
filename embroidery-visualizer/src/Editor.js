@@ -18,10 +18,6 @@ function Editor(props) {
         src_image.onload = () => {
           if (canvasRef.current && canvasCtxRef.current) {
 
-            // resize image to canvas
-            canvasRef.current.height = "500";
-            canvasRef.current.width = "500";
-
             var hRatio = canvasRef.current.width / src_image.width    ;
             var vRatio = canvasRef.current.height / src_image.height  ;
             var ratio  = Math.min ( hRatio, vRatio );
@@ -39,8 +35,21 @@ function Editor(props) {
 
     useEffect(() => {
         if (canvasRef.current) {
+          // resize image to canvas
+          canvasRef.current.height = "500";
+          canvasRef.current.width = "500";
+
           canvasCtxRef.current = canvasRef.current.getContext("2d");
-        }
+
+          if(imageSrc !== null){
+            const image = new Image();
+            image.src = imageSrc;
+            image.onload = () => {
+              canvasCtxRef.current.drawImage(image, 0, 0, 500, 500);
+            }
+          }
+      };
+        
         /*const hoveredColor = document.getElementById('hovered-color');
         const selectedColor = document.getElementById('selected-color');
 
@@ -59,7 +68,7 @@ function Editor(props) {
         return rgba;
         }*/
 
-        const moveHandler = () =>{
+        /*const moveHandler = () =>{
           console.log("Mouse moved on canvas");
         };
 
@@ -69,39 +78,21 @@ function Editor(props) {
 
         canvasRef.current.addEventListener('mousemove', moveHandler);
         canvasRef.current.addEventListener('click', clickHandler);
-        return () => {
+        /*return () => {
           canvasRef.current.removeEventListener('click', clickHandler);
           canvasRef.current.removeEventListener('mousemove', moveHandler);
-        }
-    });
+        }*/
+    }, []);
 
     return (
       <>
       <h1>Pattern Editor </h1>
         <input type="file" id="uploadFile" accept="image/png, image/jpeg" onChange={handleInputChange} />
-          <table>
-          <thead>
-            <tr>
-              <th>Source</th>
-              <th>Hovered color</th>
-              <th>Selected color</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <img id="output" src={imageSrc} alt="Please choose a file"/>
-                <canvas
-                    id="canvas"
-                    ref={canvasRef}
-                    style={{ display: "none" }}
-                  ></canvas>
-              </td>
-              <td className="color-cell" id="hovered-color"></td>
-              <td className="color-cell" id="selected-color"></td>
-            </tr>
-          </tbody>
-        </table>
+          <canvas
+              className="canvas-container-image"
+              ref={canvasRef}
+              onMouseDown={() => console.log("mouse moved on canvas")}
+            ></canvas>
       </>
     );
 }
