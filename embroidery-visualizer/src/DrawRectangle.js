@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import './DrawRectangle.css';
+//import { SketchPicker } from 'react-color'
 
 const DrawRectangle = () => {
     const canvasRef = useRef(null);
@@ -13,6 +14,9 @@ const DrawRectangle = () => {
 
     // image refers to the image data contained in the canvas
     const [image, setImage] = useState(null);
+
+    // prevImage refers to the previous image state
+    const [prevImage, setPrevImage] = useState(null);
 
     // data used for the rectangle
     const canvasOffSetX = useRef(null);
@@ -29,7 +33,7 @@ const DrawRectangle = () => {
 
         // init context infos
         const context = canvas.getContext("2d");
-
+        
         // upload the image to draw it in the canvas
         const imageTest = new Image();
         imageTest.src = "https://upload.wikimedia.org/wikipedia/commons/c/c5/Colorwheel.svg";
@@ -57,6 +61,9 @@ const DrawRectangle = () => {
 
     const colorizeSelectedRectangle = (color) => {
         if (!isDrawing){
+
+            // update the previous stage of the image
+            setPrevImage(image); 
 
             // clear rect and redraw image
             contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
@@ -140,6 +147,25 @@ const DrawRectangle = () => {
         setIsDrawing(false);
     };
 
+    // not working
+    /*const reinitializeRectangle = () => {
+
+        setRect(null);
+        // clear the canvas to get rid of the rectangle
+        contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+        // redraw image
+        contextRef.current.drawImage(image,0,0);
+    };*/
+
+    const retrievePreviousImageState = () => {
+        setImage(prevImage);
+        setPrevImage(null);
+        /*// clear rect and redraw image
+        contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        contextRef.current.drawImage(image,0,0);*/
+    };
+
     return (
         <div>
             <canvas className="canvas-container-rect"
@@ -149,10 +175,20 @@ const DrawRectangle = () => {
                 onMouseUp={stopDrawingRectangle}
                 onMouseLeave={stopDrawingRectangle}>
             </canvas>
-            {rect != null &&
-            (<button onClick={() => colorizeSelectedRectangle([155,155,155])}>colorize in grey</button>)}
+            {rect != null && (
+                <button onClick={() => colorizeSelectedRectangle([155,155,155])}>colorize in grey</button>
+                )
+            }
+            {prevImage != null &&
+            (<button onClick={() => retrievePreviousImageState()}>Undo</button>)}
         </div>
     )
 }
+
+/*
+<div>
+                <SketchPicker />
+            </div>
+            */
 
 export default DrawRectangle;
