@@ -1,6 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
 import './DrawRectangle.css';
-//import { SketchPicker } from 'react-color'
 
 const DrawRectangle = () => {
     const canvasRef = useRef(null);
@@ -185,10 +184,5 @@ const DrawRectangle = () => {
     )
 }
 
-/*
-<div>
-                <SketchPicker />
-            </div>
-            */
 
 export default DrawRectangle;
