@@ -167,11 +167,13 @@ const DrawRectangle = () => {
     };
 
     const retrievePreviousImageState = () => {
-        setImage(prevImage);
-        setPrevImage(null);
         // clear rect and redraw image
         contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-        contextRef.current.drawImage(image,0,0);
+        contextRef.current.drawImage(prevImage,0,0);
+
+        // update image and prevImage
+        setImage(prevImage);
+        setPrevImage(null);
     };
 
     const hexToRGB = (hex) => {
