@@ -11,6 +11,9 @@ function Editor(props) {
     // imageSrc refers to the image data contained in the canvas
     const [imageSrc, setImageSrc] = useState(null);
 
+    // sliderVal refers to the limit value choose to extract the model
+     const [sliderVal, setSliderVal] = useState("100");
+
     useEffect(() => {
       if (canvasRef.current) {
         // set the canvas size
@@ -58,15 +61,16 @@ function Editor(props) {
       reader.readAsDataURL(event.target.files[0]);
     };
 
-    const extractPNG = () => {
+    const extractPNG = (limit) => {
 
+      console.log(limit);
       // get current image data
       const imageData = canvasCtxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
       var pix = imageData.data;
 
       // loop over each pixel and change the transparency of the pixel when needed
       for (var i = 0, n = pix.length; i < n; i +=4) {
-        if ((pix[i] + pix[i+1] + pix[i+2]) / 3 > 200){
+        if ((pix[i] + pix[i+1] + pix[i+2]) / 3 > limit){
           pix[i+3] = 1; // make the pixel transparent
         }
       }
@@ -74,6 +78,7 @@ function Editor(props) {
       // draw the transformed imageData in canvas
       canvasCtxRef.current.putImageData(imageData, 0, 0);      
       };
+
 
     return (
       <>
@@ -83,8 +88,14 @@ function Editor(props) {
               className="canvas-container-image"
               ref={canvasRef}
             ></canvas>
+            <div>
           {imageSrc != null && 
-          (<button onClick={() => extractPNG()}>extract PNG</button>)}
+          <button onClick={() => extractPNG(sliderVal)}>extract PNG</button>
+          }
+          {imageSrc != null && 
+          <input type="range" min="0" max="255" value={sliderVal} onChange={(e) => setSliderVal(e.target.value)} className="slider" id="greyRange" />
+          }
+          </div>
       </>
     );
 }
