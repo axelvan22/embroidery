@@ -29,21 +29,6 @@ function Editor(props) {
           }
         }
       };
-
-        /*const moveHandler = () =>{
-          console.log("Mouse moved on canvas");
-        };
-
-        const clickHandler = () =>{
-          console.log("Mouse clicked canvas");
-        };
-
-        canvasRef.current.addEventListener('mousemove', moveHandler);
-        canvasRef.current.addEventListener('click', clickHandler);
-        /*return () => {
-          canvasRef.current.removeEventListener('click', clickHandler);
-          canvasRef.current.removeEventListener('mousemove', moveHandler);
-        }*/
       }, [imageSrc]);
 
     // this function is called to load the image file
@@ -73,6 +58,23 @@ function Editor(props) {
       reader.readAsDataURL(event.target.files[0]);
     };
 
+    const extractPNG = () => {
+
+      // get current image data
+      const imageData = canvasCtxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
+      var pix = imageData.data;
+
+      // loop over each pixel and change the transparency of the pixel when needed
+      for (var i = 0, n = pix.length; i < n; i +=4) {
+        if ((pix[i] + pix[i+1] + pix[i+2]) / 3 > 200){
+          pix[i+3] = 1; // make the pixel transparent
+        }
+      }
+
+      // draw the transformed imageData in canvas
+      canvasCtxRef.current.putImageData(imageData, 0, 0);      
+      };
+
     return (
       <>
       <h1>Pattern Editor </h1>
@@ -81,6 +83,8 @@ function Editor(props) {
               className="canvas-container-image"
               ref={canvasRef}
             ></canvas>
+          {imageSrc != null && 
+          (<button onClick={() => extractPNG()}>extract PNG</button>)}
       </>
     );
 }
