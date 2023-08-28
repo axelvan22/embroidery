@@ -84,7 +84,7 @@ const DrawRectangle = () => {
             const rectangleData = contextRef.current.getImageData(rect[0], rect[1], rect[2], rect[3]);
             var pix = rectangleData.data;
 
-            // Loop over each pixel and sets the new color.
+            // loop over each pixel and sets the new color.
             for (var i = 0, n = pix.length; i < n; i += 4) {
                 pix[i  ] = color[0]; // red
                 pix[i+1] = color[1]; // green
@@ -156,7 +156,7 @@ const DrawRectangle = () => {
     };
 
     // not working
-    /*const reinitializeRectangle = () => {
+    const reinitializeRectangle = () => {
 
         setRect(null);
         // clear the canvas to get rid of the rectangle
@@ -164,14 +164,14 @@ const DrawRectangle = () => {
 
         // redraw image
         contextRef.current.drawImage(image,0,0);
-    };*/
+    };
 
     const retrievePreviousImageState = () => {
         setImage(prevImage);
         setPrevImage(null);
-        /*// clear rect and redraw image
+        // clear rect and redraw image
         contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-        contextRef.current.drawImage(image,0,0);*/
+        contextRef.current.drawImage(image,0,0);
     };
 
     const hexToRGB = (hex) => {
@@ -194,6 +194,10 @@ const DrawRectangle = () => {
             </canvas>
             {rect != null && (
                 <button onClick={() => colorizeSelectedRectangle(rgb)}>colorize rectangle</button>
+                )
+            }
+            {rect != null && (
+                <button onClick={() => reinitializeRectangle()}>stop selection</button>
                 )
             }
             {prevImage != null &&
