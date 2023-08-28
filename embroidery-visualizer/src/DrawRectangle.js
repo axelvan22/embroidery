@@ -66,7 +66,7 @@ const DrawRectangle = () => {
     }, []);
 
     const colorizeSelectedRectangle = (color) => {
-        if (!isDrawing){
+        if (!isDrawing && rect[2] != 0 && rect[3] != 0){
 
             console.log(color);
 
@@ -76,9 +76,6 @@ const DrawRectangle = () => {
             // clear rect and redraw image
             contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
             contextRef.current.drawImage(image,0,0);
-            
-            // draw the rectangle around the canvas
-            contextRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
             // get the image data in the rectangle
             const rectangleData = contextRef.current.getImageData(rect[0], rect[1], rect[2], rect[3]);
@@ -106,6 +103,9 @@ const DrawRectangle = () => {
             var newImage = new Image();
             newImage.src = canvasRef.current.toDataURL();
             setImage(newImage);
+
+            // draw the rectangle around the canvas
+            contextRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         }
     };
 
@@ -162,6 +162,9 @@ const DrawRectangle = () => {
         // clear the canvas to get rid of the rectangle
         contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
+        // draw the rectangle around the canvas
+        contextRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
         // redraw image
         contextRef.current.drawImage(image,0,0);
     };
@@ -170,6 +173,9 @@ const DrawRectangle = () => {
         // clear rect and redraw image
         contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         contextRef.current.drawImage(prevImage,0,0);
+
+        // draw the rectangle around the canvas
+        contextRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
         // update image and prevImage
         setImage(prevImage);
