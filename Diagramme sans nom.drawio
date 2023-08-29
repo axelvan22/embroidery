@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-08-29T09:46:42.290Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/116.0" etag="uWPmqy7WIi0uaaPub6kq" version="21.6.9" type="github">
+<mxfile host="app.diagrams.net" modified="2023-08-29T09:53:19.550Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/116.0" etag="0xw0J291WiVdZDkZrZ8_" version="21.6.9" type="github">
   <diagram name="Page-1" id="29J9fySSf_xYr9xFoOR4">
     <mxGraphModel dx="1050" dy="558" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -16,7 +16,7 @@
         <mxCell id="IKHcheqXlQfyR-ehrwdQ-9" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="60" y="60" width="130" height="300" as="geometry" />
         </mxCell>
-        <mxCell id="IKHcheqXlQfyR-ehrwdQ-10" value="Importer un modèle" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="IKHcheqXlQfyR-ehrwdQ-10" value="Charger un modèle" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="65" y="80" width="120" height="20" as="geometry" />
         </mxCell>
         <mxCell id="IKHcheqXlQfyR-ehrwdQ-11" value="Visualizer" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
@@ -51,6 +51,24 @@
         </mxCell>
         <mxCell id="IKHcheqXlQfyR-ehrwdQ-19" value="extraire le png" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="440" y="310" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IKHcheqXlQfyR-ehrwdQ-20" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="65" y="450" width="530" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="IKHcheqXlQfyR-ehrwdQ-21" value="&lt;div align=&quot;left&quot;&gt;localhost/visualizer&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="65" y="430" width="530" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IKHcheqXlQfyR-ehrwdQ-22" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="65" y="450" width="130" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="IKHcheqXlQfyR-ehrwdQ-23" value="Charger le vêtement" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="460" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IKHcheqXlQfyR-ehrwdQ-24" value="Editor" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="710" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IKHcheqXlQfyR-ehrwdQ-26" value="Application file viewer" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="220" y="480" width="350" height="240" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
