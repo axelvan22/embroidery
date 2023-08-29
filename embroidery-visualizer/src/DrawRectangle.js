@@ -155,7 +155,7 @@ const DrawRectangle = () => {
         setIsDrawing(false);
     };
 
-    // not working
+
     const reinitializeRectangle = () => {
 
         setRect(null);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect , useRef} from 'react';
 //import colors from './colors.jpg';
-//import { saveAs } from 'file-saver';
+import { saveAs } from 'file-saver';
 
 function Editor(props) {
 
@@ -12,7 +12,7 @@ function Editor(props) {
     const [imageSrc, setImageSrc] = useState(null);
 
     // sliderVal refers to the limit value choose to extract the model
-     const [sliderVal, setSliderVal] = useState("100");
+    const [sliderVal, setSliderVal] = useState("100");
 
     useEffect(() => {
       if (canvasRef.current) {
@@ -32,7 +32,7 @@ function Editor(props) {
           }
         }
       };
-      }, [imageSrc]);
+    }, [imageSrc]);
 
     // this function is called to load the image file
     const handleInputChange = (event) => {
@@ -63,7 +63,6 @@ function Editor(props) {
 
     const extractPNG = (limit) => {
 
-      console.log(limit);
       // get current image data
       const imageData = canvasCtxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
       var pix = imageData.data;
@@ -77,8 +76,13 @@ function Editor(props) {
 
       // draw the transformed imageData in canvas
       canvasCtxRef.current.putImageData(imageData, 0, 0);      
-      };
+    };
 
+    const saveImage = () => {
+      canvasRef.current.toBlob(function(blob) {
+        saveAs(blob, "emboidery_model");
+        }, "image/png");
+    };
 
     return (
       <>
@@ -94,6 +98,9 @@ function Editor(props) {
           }
           {imageSrc != null && 
           <input type="range" min="0" max="255" value={sliderVal} onChange={(e) => setSliderVal(e.target.value)} className="slider" id="greyRange" />
+          }
+          {imageSrc != null && 
+          <button onClick={() => saveImage()}>save model</button>
           }
           </div>
       </>
