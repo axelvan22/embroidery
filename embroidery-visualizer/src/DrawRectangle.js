@@ -4,7 +4,7 @@ import {Sketch} from '@uiw/react-color';
 
 const DrawRectangle = () => {
     const canvasRef = useRef(null);
-    const contextRef = useRef(null);
+    const canvasCtxRef = useRef(null);
     
     // isDrawing is true when the rectangle is being drawn
     const [isDrawing, setIsDrawing] = useState(false);
@@ -19,7 +19,7 @@ const DrawRectangle = () => {
     const [rect, setRect] = useState(null);
 
     // image refers to the image data contained in the canvas
-    const [image, setImage] = useState(null);
+    const [imageSrc, setImageSrc] = useState(null);
 
     // prevImage refers to the previous image state
     const [prevImage, setPrevImage] = useState(null);
@@ -46,7 +46,7 @@ const DrawRectangle = () => {
         imageTest.crossOrigin = "Anonymous";
         imageTest.onload = function() {
             context.drawImage(imageTest,0,0);
-            setImage(imageTest);
+            setImageSrc(imageTest);
         }
 
         // set the properties for the drawing of the rectangle
@@ -54,10 +54,10 @@ const DrawRectangle = () => {
         context.strokeStyle = "black";
         context.setLineDash([4, 2]);
         context.lineWidth = 1;
-        contextRef.current = context;
+        canvasCtxRef.current = context;
 
         // draw the rectangle around the canvas
-        contextRef.current.strokeRect(0, 0, canvas.width, canvas.height);
+        canvasCtxRef.current.strokeRect(0, 0, canvas.width, canvas.height);
 
         // init canvasOffSet X and Y
         const canvasOffSet = canvas.getBoundingClientRect();
@@ -71,14 +71,14 @@ const DrawRectangle = () => {
             console.log(color);
 
             // update the previous stage of the image
-            setPrevImage(image); 
+            setPrevImage(imageSrc); 
 
             // clear rect and redraw image
-            contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-            contextRef.current.drawImage(image,0,0);
+            canvasCtxRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+            canvasCtxRef.current.drawImage(imageSrc,0,0);
 
             // get the image data in the rectangle
-            const rectangleData = contextRef.current.getImageData(rect[0], rect[1], rect[2], rect[3]);
+            const rectangleData = canvasCtxRef.current.getImageData(rect[0], rect[1], rect[2], rect[3]);
             var pix = rectangleData.data;
 
             // loop over each pixel and sets the new color.
@@ -94,7 +94,7 @@ const DrawRectangle = () => {
             var y = rect[3] < 0 ? rect[1] + rect[3] : rect[1];
 
             // draw the ImageData at the given (x,y) coordinates.
-            contextRef.current.putImageData(rectangleData, x, y);
+            canvasCtxRef.current.putImageData(rectangleData, x, y);
 
             // the rectangle has been used
             setRect(null);
@@ -102,10 +102,10 @@ const DrawRectangle = () => {
             // set the new Image data
             var newImage = new Image();
             newImage.src = canvasRef.current.toDataURL();
-            setImage(newImage);
+            setImageSrc(newImage);
 
             // draw the rectangle around the canvas
-            contextRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+            canvasCtxRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         }
     };
 
@@ -138,16 +138,16 @@ const DrawRectangle = () => {
         const rectHeight = newMouseY - startY.current;
 
         // clear the canvas to get rid of the rectangle
-        contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        canvasCtxRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
         // redraw image
-        contextRef.current.drawImage(image,0,0);
+        canvasCtxRef.current.drawImage(imageSrc,0,0);
 
         // draw the rectangle around the canvas
-        contextRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        canvasCtxRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
         // create the new rectangle
-        contextRef.current.strokeRect(startX.current, startY.current, rectWidht, rectHeight);
+        canvasCtxRef.current.strokeRect(startX.current, startY.current, rectWidht, rectHeight);
         setRect([startX.current, startY.current, rectWidht, rectHeight]);
     };
 
@@ -160,25 +160,25 @@ const DrawRectangle = () => {
 
         setRect(null);
         // clear the canvas to get rid of the rectangle
-        contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        canvasCtxRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
         // draw the rectangle around the canvas
-        contextRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        canvasCtxRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
         // redraw image
-        contextRef.current.drawImage(image,0,0);
+        canvasCtxRef.current.drawImage(imageSrc,0,0);
     };
 
     const retrievePreviousImageState = () => {
         // clear rect and redraw image
-        contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-        contextRef.current.drawImage(prevImage,0,0);
+        canvasCtxRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        canvasCtxRef.current.drawImage(prevImage,0,0);
 
         // draw the rectangle around the canvas
-        contextRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        canvasCtxRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
         // update image and prevImage
-        setImage(prevImage);
+        setImageSrc(prevImage);
         setPrevImage(null);
     };
 
@@ -220,7 +220,6 @@ const DrawRectangle = () => {
                 onChange={(color) => {
                     setHex(color.hex);
                     setRgb(hexToRGB(color.hex));
-                    //console.log(color.hex);
                 }}
             />
         </div>
