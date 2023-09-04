@@ -9,6 +9,9 @@ function Editor(props) {
     const canvasRef = useRef(null);
     const canvasCtxRef = useRef(null);
 
+    // isFirstLoaded is true only when the image has been loaded, before any change to the image
+    const [isFirstLoaded, setIsFirstLoaded] = useState(false);
+
     // imageSrc refers to the image data contained in the canvas
     const [imageSrc, setImageSrc] = useState(null);
 
@@ -56,7 +59,6 @@ function Editor(props) {
           image.src = imageSrc;
           image.onload = () => {
             context.drawImage(image, 0, 0);
-            setImageSrc(image);
           }
           
           // set the properties for the drawing of the rectangle
@@ -93,6 +95,9 @@ function Editor(props) {
 
             // set the new imageSrc value
             setImageSrc(imageData);
+
+            // set the isFirstLoaded value
+            setIsFirstLoaded(true);
           }
         };
         src_image.src = event.target.result;
@@ -100,11 +105,23 @@ function Editor(props) {
       reader.readAsDataURL(event.target.files[0]);
     };
 
+    const storeImage = () => {
+      var newImage = new Image();
+      newImage.src = canvasRef.current.toDataURL();
+      setImageSrc(newImage);
+    };
+
 
     const startDrawingRectangle = ({nativeEvent}) => {
       // prevent the event to be called more than once
       nativeEvent.preventDefault();
       nativeEvent.stopPropagation();
+
+      // store the image before drawing the rectangle
+      if (isFirstLoaded) {
+        storeImage();
+        setIsFirstLoaded(false);
+      }
 
       // update the starting point of the rectangle
       startX.current = nativeEvent.clientX - canvasOffSetX.current;
@@ -136,9 +153,6 @@ function Editor(props) {
       // redraw image
       canvasCtxRef.current.drawImage(imageSrc,0,0);
 
-      // draw the rectangle around the canvas
-      canvasCtxRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-
       // create the new rectangle
       canvasCtxRef.current.strokeRect(startX.current, startY.current, rectWidht, rectHeight);
       setRect([startX.current, startY.current, rectWidht, rectHeight]);
@@ -153,11 +167,9 @@ function Editor(props) {
     const reinitializeRectangle = () => {
 
       setRect(null);
+
       // clear the canvas to get rid of the rectangle
       canvasCtxRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-
-      // draw the rectangle around the canvas
-      canvasCtxRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
       // redraw image
       canvasCtxRef.current.drawImage(imageSrc,0,0);
@@ -165,8 +177,6 @@ function Editor(props) {
 
     const colorizeSelectedRectangle = (color) => {
       if (!isDrawing && rect[2] != 0 && rect[3] != 0){
-
-          console.log(color);
 
           // update the previous stage of the image
           setPrevImage(imageSrc); 
@@ -201,19 +211,14 @@ function Editor(props) {
           var newImage = new Image();
           newImage.src = canvasRef.current.toDataURL();
           setImageSrc(newImage);
-
-          // draw the rectangle around the canvas
-          canvasCtxRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       }
     };
 
     const retrievePreviousImageState = () => {
+
       // clear rect and redraw image
       canvasCtxRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       canvasCtxRef.current.drawImage(prevImage,0,0);
-
-      // draw the rectangle around the canvas
-      canvasCtxRef.current.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
       // update image and prevImage
       setImageSrc(prevImage);
@@ -221,11 +226,12 @@ function Editor(props) {
     };
 
     const hexToRGB = (hex) => {
+
       hex = "0x" + hex.substring(1,7);
       let r = (hex >> 16) & 0xFF;
       let g = (hex >> 8) & 0xFF;
       let b = hex & 0xFF;
-      //console.log([[r, g, b]]);
+
       return [r, g, b];
     };  
 
@@ -244,6 +250,9 @@ function Editor(props) {
 
       // draw the transformed imageData in canvas
       canvasCtxRef.current.putImageData(imageData, 0, 0);      
+
+      // store the new image value
+      storeImage();
     };
 
     const saveImage = () => {
@@ -301,11 +310,5 @@ function Editor(props) {
     );
 }
 
-/*
-onMouseDown={startDrawingRectangle}
-              onMouseMove={drawRectangle}
-              onMouseUp={stopDrawingRectangle}
-              onMouseLeave={stopDrawingRectangle}
-              */
 
 export default Editor;
