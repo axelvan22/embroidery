@@ -50,24 +50,20 @@ function Editor(props) {
         canvasCtxRef.current = canvasRef.current.getContext("2d");
 
         if(imageSrc !== null){
-
-          // init context infos
-          const context = canvasRef.current.getContext("2d");
-
           // print the image in the canvas when it's loaded
           const image = new Image();
           image.src = imageSrc;
           image.onload = () => {
-            context.drawImage(image, 0, 0);
+            canvasCtxRef.current.drawImage(image, 0, 0);
           }
-          
-          // set the properties for the drawing of the rectangle
-          context.lineCap = "round";
-          context.strokeStyle = "black";
-          context.setLineDash([4, 2]);
-          context.lineWidth = 1;
-          canvasCtxRef.current = context;
         }
+
+        // set the properties for the drawing of the rectangle
+        canvasCtxRef.current.lineCap = "round";
+        canvasCtxRef.current.strokeStyle = "black";
+        canvasCtxRef.current.setLineDash([4, 2]);
+        canvasCtxRef.current.lineWidth = 1;
+
         // init canvasOffSet X and Y
         const canvasOffSet = canvasRef.current.getBoundingClientRect();
         canvasOffSetX.current = canvasOffSet.top;
