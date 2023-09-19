@@ -270,37 +270,25 @@ function Editor(props) {
               onMouseLeave={stopDrawingRectangle}
             ></canvas>
             <div>
-          {imageSrc != null && 
-          <button onClick={() => extractPNG(sliderVal)}>extract PNG</button>
-          }
-          {imageSrc != null && 
-          <input type="range" min="0" max="255" value={sliderVal} onChange={(e) => setSliderVal(e.target.value)} className="slider" id="greyRange" />
-          }
-          {imageSrc != null && 
-          <button onClick={() => saveImage()}>save model</button>
-          }
-          {rect != null && (
-                <button onClick={() => colorizeSelectedRectangle(rgb)}>colorize rectangle</button>
-                )
-            }
-            {rect != null && (
-                <button onClick={() => reinitializeRectangle()}>stop selection</button>
-                )
-            }
-            {prevImage != null &&
-            (<button onClick={() => retrievePreviousImageState()}>Undo</button>)}
-            <div style={{ background: hex, marginTop: 30, padding: 10 }}>
-              This is the color picked.
-            </div>
-            <Sketch
-                style={{ marginLeft: 20 }}
-                color={hex}
-                disableAlpha="true"
-                onChange={(color) => {
-                    setHex(color.hex);
-                    setRgb(hexToRGB(color.hex));
-                }}
-            />
+
+              <button onClick={() => extractPNG(sliderVal)} disabled={(imageSrc != null)? false : true} >extract PNG</button>
+              <input type="range" min="0" max="255" disabled={(imageSrc != null)? false : true} value={sliderVal} onChange={(e) => setSliderVal(e.target.value)} className="slider" id="greyRange" />
+              <button onClick={() => saveImage()} disabled={(imageSrc != null)? false : true} >save model</button>
+              <button onClick={() => colorizeSelectedRectangle(rgb)} disabled={(rect != null)? false : true} >colorize rectangle</button>
+              <button onClick={() => reinitializeRectangle()} disabled={(rect != null)? false : true} >stop selection</button>
+              <button onClick={() => retrievePreviousImageState()} disabled={(prevImage != null)? false : true} >Undo</button>
+              <div style={{ background: hex, marginTop: 30, padding: 10 }}>
+                This is the color picked.
+              </div>
+              <Sketch
+                  style={{ paddingLeft: 50, background: hex }}
+                  color={hex}
+                  disableAlpha="true"
+                  onChange={(color) => {
+                      setHex(color.hex);
+                      setRgb(hexToRGB(color.hex));
+                  }}
+              />
           </div>
       </>
     );
