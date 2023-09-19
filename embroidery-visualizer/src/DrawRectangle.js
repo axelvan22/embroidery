@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
-import './DrawRectangle.css';
+
 import {Sketch} from '@uiw/react-color';
 
 const DrawRectangle = () => {
