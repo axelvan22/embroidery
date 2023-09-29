@@ -124,6 +124,8 @@ function Editor(props) {
       startX.current = nativeEvent.clientX - canvasOffSetX.current;
       startY.current = nativeEvent.clientY - canvasOffSetY.current;
 
+      console.log(nativeEvent)
+
       setIsDrawing(true);
     };
 
@@ -259,44 +261,50 @@ function Editor(props) {
     };
 
     return (
-      <>
-      <div className='left-side-bar'>
-        <input type="file" id="uploadFile" accept="image/png, image/jpeg" onChange={handleInputChange} />
-        <button onClick={() => saveImage()} disabled={(imageSrc != null)? false : true} >save model</button>
-      </div>
-      <div className='center-area'>
-        <div className='canvas-area'>
-          <canvas
-              className="canvas-container-image"
-              ref={canvasRef}
-              onMouseDown={startDrawingRectangle}
-              onMouseMove={drawRectangle}
-              onMouseUp={stopDrawingRectangle}
-              onMouseLeave={stopDrawingRectangle}
-            ></canvas>
-        </div>
-          <button onClick={() => colorizeSelectedRectangle(rgb)} disabled={(rect != null)? false : true} >colorize rectangle</button>
-          <button onClick={() => reinitializeRectangle()} disabled={(rect != null)? false : true} >stop selection</button>
-          <button onClick={() => retrievePreviousImageState()} disabled={(prevImage != null)? false : true} >Undo</button>
-      </div>
-          
-            <div className='right-side-bar'>
-              <div style={{ background: hex }}>
-                This is the color picked.
-              </div>
-              <Sketch
-                  style={{ paddingLeft: 50, background: hex }}
-                  color={hex}
-                  disableAlpha="true"
-                  onChange={(color) => {
-                      setHex(color.hex);
-                      setRgb(hexToRGB(color.hex));
-                  }}
-              />
-              <button onClick={() => extractPNG(sliderVal)} disabled={(imageSrc != null)? false : true} >extract PNG</button>
-              <input type="range" min="0" max="255" disabled={(imageSrc != null)? false : true} value={sliderVal} onChange={(e) => setSliderVal(e.target.value)} className="slider" id="greyRange" />
+      <div className='editor'>
+        <div className='left-side-bar'>
+          <div className='buttons'>
+            <input className='button' type="file" id="uploadFile" accept="image/png, image/jpeg" onChange={handleInputChange} />
+            <button className='button' onClick={() => saveImage()} disabled={(imageSrc != null)? false : true} >save model</button>
           </div>
-      </>
+        </div>
+        <div className='center-area'>
+          <div className='canvas-area'>
+            <canvas
+                className="canvas-container-image"
+                ref={canvasRef}
+                onMouseDown={startDrawingRectangle}
+                onMouseMove={drawRectangle}
+                onMouseUp={stopDrawingRectangle}
+                onMouseLeave={stopDrawingRectangle}
+              ></canvas>
+          </div>
+          <div className='buttons'>
+            <button className='button' onClick={() => colorizeSelectedRectangle(rgb)} disabled={(rect != null)? false : true} >colorize rectangle</button>
+            <button className='button' onClick={() => reinitializeRectangle()} disabled={(rect != null)? false : true} >stop selection</button>
+            <button className='button'onClick={() => retrievePreviousImageState()} disabled={(prevImage != null)? false : true} >Undo</button>
+          </div>
+        </div>
+            
+              <div className='right-side-bar'>
+                <div className='colorPicker'>
+                  <div className='indicator' style={{ background: hex }} />
+                  <Sketch
+                      style={{ }}
+                      color={hex}
+                      disableAlpha="true"
+                      onChange={(color) => {
+                          setHex(color.hex);
+                          setRgb(hexToRGB(color.hex));
+                      }}
+                  />
+                </div>
+                <div className='extract'>
+                  <input type="range" min="0" max="255" disabled={(imageSrc != null)? false : true} value={sliderVal} onChange={(e) => setSliderVal(e.target.value)} className="slider" id="greyRange" />
+                  <button onClick={() => extractPNG(sliderVal)} disabled={(imageSrc != null)? false : true} >extract PNG</button>
+                </div>
+            </div>
+          </div>
     );
 }
 
