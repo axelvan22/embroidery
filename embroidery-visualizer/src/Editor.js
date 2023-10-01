@@ -67,8 +67,8 @@ function Editor(props) {
 
         // init canvasOffSet X and Y
         const canvasOffSet = canvasRef.current.getBoundingClientRect();
-        canvasOffSetX.current = canvasOffSet.top;
-        canvasOffSetY.current = canvasOffSet.left;
+        canvasOffSetX.current = canvasOffSet.left;
+        canvasOffSetY.current = canvasOffSet.top;
       };
     }, []);
 
@@ -123,8 +123,6 @@ function Editor(props) {
       // update the starting point of the rectangle
       startX.current = nativeEvent.clientX - canvasOffSetX.current;
       startY.current = nativeEvent.clientY - canvasOffSetY.current;
-
-      console.log(nativeEvent)
 
       setIsDrawing(true);
     };
